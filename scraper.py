@@ -60,10 +60,10 @@ mobile_user_agent = (
 config = Config(user_agent=mobile_user_agent, incognito=True, headless=False)
 
 
-repo_path = "/home/daniel/git/marketplace"
-repo_url = "https://github.com/daniel-campa/marketplace.git"
+repo_path = "C:\\Users\\thepo\\Desktop\\marketplace"
+repo_url = "https://github.com/jpoach/marketplace.git"
 
-content_path = os.path.join(repo_path, "docs/index.html")
+content_path = os.path.join(repo_path, "docs\\index.html")
 
 
 while True:
