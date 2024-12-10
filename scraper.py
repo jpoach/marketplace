@@ -14,14 +14,14 @@ parser = argparse.ArgumentParser(description="Filter car listings based on crite
 parser.add_argument("--base-url", type=str, default="https://www.facebook.com/marketplace/108205955874066/search?", help="Base url")
 
 parser.add_argument("--min-price", type=int, default=1000, help="Minimum price of the car")
-parser.add_argument("--max-price", type=int, default=30000, help="Maximum price of the car")
-parser.add_argument("--days-listed", type=int, default=7, help="Maximum number of days the car has been listed")
-parser.add_argument("--min-mileage", type=int, default=50000, help="Minimum mileage of the car")
-parser.add_argument("--max-mileage", type=int, default=200000, help="Maximum mileage of the car")
+parser.add_argument("--max-price", type=int, default=2500, help="Maximum price of the car")
+parser.add_argument("--days-listed", type=int, default=2, help="Maximum number of days the car has been listed")
+parser.add_argument("--min-mileage", type=int, default=0, help="Minimum mileage of the car")
+parser.add_argument("--max-mileage", type=int, default=50000, help="Maximum mileage of the car")
 parser.add_argument("--min-year", type=int, default=2000, help="Earliest year of the car model")
 parser.add_argument("--max-year", type=int, default=2020, help="Latest year of the car model")
 parser.add_argument("--transmission", type=str, default="automatic", help="Transmission type of the car")
-parser.add_argument("--search", type=str, default="HondaCivic", help="Search")
+parser.add_argument("--search", type=str, default="FordEscape", help="Search")
 
 parser.add_argument("--scroll-count", type=int, default=4, help="Scroll count")
 parser.add_argument("--scroll-delay", type=int, default=2, help="Scroll delay")
@@ -43,7 +43,7 @@ max_year = args.max_year
 transmission = args.transmission
 search = args.search
 #Set up full url
-url = f"{base_url}minPrice={min_price}&maxPrice={max_price}&daysSinceListed={days_listed}&maxMileage={max_mileage}&maxYear={max_year}&minMileage={min_mileage}&minYear={min_year}&transmissionType={transmission}&query={search}&exact=false"
+url = f"{base_url}minPrice={min_price}&maxPrice={max_price}&daysSinceListed={days_listed}&maxMileage={max_mileage}&maxYear={max_year}&minMileage={min_mileage}&minYear={min_year}&query={search}&exact=false" ##&transmissionType={transmission}
 
 # Define the number of times to scroll the page
 scroll_count = args.scroll_count
@@ -57,7 +57,7 @@ mobile_user_agent = (
     "AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 "
     "Mobile/15E148 Safari/604.1"
 )
-config = Config(user_agent=mobile_user_agent, incognito=True, headless=False)
+config = Config(user_agent=mobile_user_agent, incognito=True, headless=True)
 
 
 repo_path = "C:\\Users\\thepo\\Desktop\\marketplace"
@@ -123,7 +123,7 @@ while True:
             listings_df = pd.concat([listings_df, pd.DataFrame([item_dict])], ignore_index=True)
 
         listings_df.price = listings_df.price.str.replace(',','').astype(int)
-        listings_df.mileage = listings_df.mileage.str.removesuffix('K miles').str.removesuffix('K miles · Dealership').astype(int) * 1000
+        # listings_df.mileage = listings_df.mileage.str.removesuffix('K miles').str.removesuffix('K miles · Dealership').astype(int) * 1000
         # listings_df.insert(3, 'mp_ratio', listings_df.mileage / listings_df.price)
 
         listings_df.link = 'https://www.facebook.com' + listings_df.link
@@ -137,7 +137,7 @@ while True:
         out_df.drop(['image'], axis=1, inplace=True)
 
         print(
-            tabulate(out_df, headers='keys', tablefmt='psql', showindex=False, maxcolwidths=[60, 6, 7, 17, 5, 70])
+            tabulate(out_df, headers='keys', tablefmt='psql', showindex=False, maxcolwidths=[60, 6, 10, 17, 5, 70])
         )
 
         out_df.to_html(content_path, index=False, escape=False, classes=['table table-stripped'])
