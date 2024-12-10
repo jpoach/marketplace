@@ -13,12 +13,12 @@ parser = argparse.ArgumentParser(description="Filter car listings based on crite
 
 parser.add_argument("--base-url", type=str, default="https://www.facebook.com/marketplace/108205955874066/search?", help="Base url")
 
-parser.add_argument("--min-price", type=int, default=1000, help="Minimum price of the car")
-parser.add_argument("--max-price", type=int, default=2500, help="Maximum price of the car")
+parser.add_argument("--min-price", type=int, default=0, help="Minimum price of the car")
+parser.add_argument("--max-price", type=int, default=5000, help="Maximum price of the car")
 parser.add_argument("--days-listed", type=int, default=2, help="Maximum number of days the car has been listed")
 parser.add_argument("--min-mileage", type=int, default=0, help="Minimum mileage of the car")
-parser.add_argument("--max-mileage", type=int, default=50000, help="Maximum mileage of the car")
-parser.add_argument("--min-year", type=int, default=2000, help="Earliest year of the car model")
+parser.add_argument("--max-mileage", type=int, default=100000, help="Maximum mileage of the car")
+parser.add_argument("--min-year", type=int, default=2008, help="Earliest year of the car model")
 parser.add_argument("--max-year", type=int, default=2020, help="Latest year of the car model")
 parser.add_argument("--transmission", type=str, default="automatic", help="Transmission type of the car")
 parser.add_argument("--search", type=str, default="FordEscape", help="Search")
@@ -57,7 +57,7 @@ mobile_user_agent = (
     "AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 "
     "Mobile/15E148 Safari/604.1"
 )
-config = Config(user_agent=mobile_user_agent, incognito=True, headless=True)
+config = Config(user_agent=mobile_user_agent, incognito=True, headless=False)
 
 
 repo_path = "C:\\Users\\thepo\\Desktop\\marketplace"
@@ -112,7 +112,7 @@ while True:
             
             item_dict = {
                 'name': name,
-                'price': price.split('$')[1],
+                'price': price.str.remove('$'),
                 'mileage': mileage,
                 'city': city,
                 'state': state,
