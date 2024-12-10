@@ -57,7 +57,7 @@ mobile_user_agent = (
     "AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 "
     "Mobile/15E148 Safari/604.1"
 )
-config = Config(user_agent=mobile_user_agent, incognito=True, headless=False)
+config = Config(user_agent=mobile_user_agent, incognito=True, headless=True)
 
 
 repo_path = "C:\\Users\\thepo\\Desktop\\marketplace"
@@ -112,7 +112,7 @@ while True:
             
             item_dict = {
                 'name': name,
-                'price': price.str.remove('$'),
+                'price': price.replace("$"," "),
                 'mileage': mileage,
                 'city': city,
                 'state': state,
@@ -120,9 +120,9 @@ while True:
                 'image': image_link
             }
 
-            listings_df = pd.concat([listings_df, pd.DataFrame([item_dict])], ignore_index=True)
-
-        listings_df.price = listings_df.price.str.replace(',','').astype(int)
+            listings_df = pd.concat([listings_df, pd.DataFrame([item_dict])], ignore_index=False)
+ 
+         #listings_df.price = listings_df.price.str.replace(',','').astype(int)
         # listings_df.mileage = listings_df.mileage.str.removesuffix('K miles').str.removesuffix('K miles · Dealership').astype(int) * 1000
         # listings_df.insert(3, 'mp_ratio', listings_df.mileage / listings_df.price)
 
