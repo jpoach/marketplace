@@ -57,7 +57,7 @@ mobile_user_agent = (
     "AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 "
     "Mobile/15E148 Safari/604.1"
 )
-config = Config(user_agent=mobile_user_agent, incognito=True, headless=True)
+config = Config(user_agent=mobile_user_agent, incognito=True, headless=False)
 
 
 repo_path = "C:\\Users\\thepo\\Desktop\\marketplace"
