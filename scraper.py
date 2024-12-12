@@ -20,7 +20,7 @@ parser.add_argument("--min-mileage", type=int, default=17000, help="Minimum mile
 parser.add_argument("--max-mileage", type=int, default=99000, help="Maximum mileage of the car")
 parser.add_argument("--min-year", type=int, default=2005, help="Earliest year of the car model")
 parser.add_argument("--max-year", type=int, default=2015, help="Latest year of the car model")
-parser.add_argument("--transmission", type=str, default="automatic", help="Transmission type of the car")
+#parser.add_argument("--transmission", type=str, default="automatic", help="Transmission type of the car")
 parser.add_argument("--search", type=str, default="ToyotaTacoma", help="Search")
 
 parser.add_argument("--scroll-count", type=int, default=4, help="Scroll count")
@@ -40,7 +40,7 @@ min_mileage = args.min_mileage
 max_mileage = args.max_mileage
 min_year = args.min_year
 max_year = args.max_year
-transmission = args.transmission
+#transmission = args.transmission
 search = args.search
 #Set up full url
 url = f"{base_url}minPrice={min_price}&maxPrice={max_price}&daysSinceListed={days_listed}&maxMileage={max_mileage}&maxYear={max_year}&minMileage={min_mileage}&minYear={min_year}&query={search}&exact=false" ##&transmissionType={transmission}
@@ -57,7 +57,7 @@ mobile_user_agent = (
     "AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 "
     "Mobile/15E148 Safari/604.1"
 )
-config = Config(user_agent=mobile_user_agent, incognito=True, headless=True)
+config = Config(user_agent=mobile_user_agent, incognito=True, headless=False)
 
 
 repo_path = "C:\\Users\\thepo\\Desktop\\marketplace"
