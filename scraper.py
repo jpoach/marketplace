@@ -21,7 +21,7 @@ parser.add_argument("--max-mileage", type=int, default=99000, help="Maximum mile
 parser.add_argument("--min-year", type=int, default=2005, help="Earliest year of the car model")
 parser.add_argument("--max-year", type=int, default=2015, help="Latest year of the car model")
 parser.add_argument("--transmission", type=str, default="automatic", help="Transmission type of the car")
-parser.add_argument("--search", type=str, default="fordescape", help="Search")
+parser.add_argument("--search", type=str, default="ToyotaTacoma", help="Search")
 
 parser.add_argument("--scroll-count", type=int, default=4, help="Scroll count")
 parser.add_argument("--scroll-delay", type=int, default=2, help="Scroll delay")
@@ -57,7 +57,7 @@ mobile_user_agent = (
     "AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 "
     "Mobile/15E148 Safari/604.1"
 )
-config = Config(user_agent=mobile_user_agent, incognito=True, headless=False)
+config = Config(user_agent=mobile_user_agent, incognito=True, headless=True)
 
 
 repo_path = "C:\\Users\\thepo\\Desktop\\marketplace"
