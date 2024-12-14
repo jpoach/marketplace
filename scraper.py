@@ -19,7 +19,7 @@ parser.add_argument("--days-listed", type=int, default=1, help="Maximum number o
 parser.add_argument("--min-mileage", type=int, default=17000, help="Minimum mileage of the car")
 parser.add_argument("--max-mileage", type=int, default=99000, help="Maximum mileage of the car")
 parser.add_argument("--min-year", type=int, default=2004, help="Earliest year of the car model")
-parser.add_argument("--max-year", type=int, default=2015, help="Latest year of the car model")
+parser.add_argument("--max-year", type=int, default=2012, help="Latest year of the car model")
 #parser.add_argument("--transmission", type=str, default="automatic", help="Transmission type of the car")
 parser.add_argument("--search", type=str, default="fordescape", help="Search")
 
