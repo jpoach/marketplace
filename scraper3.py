@@ -14,7 +14,7 @@ import argparse
 # Argument parser setup
 parser = argparse.ArgumentParser(description="Filter car listings based on criteria.")
 
-parser.add_argument("--base-url", type=str, default="https://www.facebook.com/marketplace/108205955874066/search/?", help="Base URL")
+parser.add_argument("--base-url", type=str, default="https://www.facebook.com/marketplace/108205955874066/vehicles?", help="Base URL")
 parser.add_argument("--min-price", type=int, default=575, help="Minimum price of the car")
 parser.add_argument("--max-price", type=int, default=2900, help="Maximum price of the car")
 parser.add_argument("--days-listed", type=int, default=1, help="Maximum number of days the car has been listed")
