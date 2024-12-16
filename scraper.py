@@ -11,17 +11,17 @@ import argparse
 
 parser = argparse.ArgumentParser(description="Filter car listings based on criteria.")
 
-parser.add_argument("--base-url", type=str, default="https://www.facebook.com/marketplace/morgantown/search/?", help="Base url")
+parser.add_argument("--base-url", type=str, default="https://www.facebook.com/marketplace/108205955874066/search/?", help="Base url")
 
 parser.add_argument("--min-price", type=int, default=575, help="Minimum price of the car")
 parser.add_argument("--max-price", type=int, default=2900, help="Maximum price of the car")
 parser.add_argument("--days-listed", type=int, default=1, help="Maximum number of days the car has been listed")
 parser.add_argument("--min-mileage", type=int, default=20000, help="Minimum mileage of the car")
 parser.add_argument("--max-mileage", type=int, default=140000, help="Maximum mileage of the car")
-parser.add_argument("--min-year", type=int, default=2004, help="Earliest year of the car model")
-parser.add_argument("--max-year", type=int, default=2012, help="Latest year of the car model")
+parser.add_argument("--min-year", type=int, default=2000, help="Earliest year of the car model")
+parser.add_argument("--max-year", type=int, default=2024, help="Latest year of the car model")
 #parser.add_argument("--transmission", type=str, default="automatic", help="Transmission type of the car")
-parser.add_argument("--search", type=str, default="gmcsierra", help="Search")
+parser.add_argument("--search", type=str, default="fordescape", help="Search")
 
 parser.add_argument("--scroll-count", type=int, default=10, help="Scroll count")
 parser.add_argument("--scroll-delay", type=int, default=2, help="Scroll delay")
