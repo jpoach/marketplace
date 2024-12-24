@@ -21,8 +21,8 @@ parser.add_argument("--base-url", type=str, default="https://www.facebook.com/ma
 parser.add_argument("--name", type=str, default="FordEscape", help="Name of the item")
 parser.add_argument("--min-price", type=int, default=100, help="Minimum price of the item")
 parser.add_argument("--max-price", type=int, default=2500, help="Maximum price of the item")
-parser.add_argument("--days-listed", type=int, default=1, help="Maximum number of days the item has been listed")
-parser.add_argument("--radius", type=int, default=500, help="Search radius")
+parser.add_argument("--days-listed", type=int, default=2, help="Maximum number of days the item has been listed")
+parser.add_argument("--radius", type=int, default=80, help="Search radius")
 
 parser.add_argument("--scroll-count", type=int, default=10, help="Scroll count")
 parser.add_argument("--scroll-delay", type=int, default=2, help="Scroll delay")
