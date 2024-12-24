@@ -11,18 +11,21 @@ import git
 import os
 import argparse
 
-pd.set_option('display.max_colwidth', None)
-
-parser = argparse.ArgumentParser(description="Filter listings based on criteria.")
+parser = argparse.ArgumentParser(description="Filter car listings based on criteria.")
 
 parser.add_argument("--base-url", type=str, default="https://www.facebook.com/marketplace/108205955874066/search?", help="Base url")
 
-parser.add_argument("--name", type=str, default="fordescape", help="Name of the item")
-parser.add_argument("--min-price", type=int, default=1000, help="Minimum price of the item")
-parser.add_argument("--max-price", type=int, default=3000, help="Maximum price of the item")
-parser.add_argument("--days-listed", type=int, default=1, help="Maximum number of days the item has been listed")
+parser.add_argument("--min-price", type=int, default=1000, help="Minimum price of the car")
+parser.add_argument("--max-price", type=int, default=30000, help="Maximum price of the car")
+parser.add_argument("--days-listed", type=int, default=7, help="Maximum number of days the car has been listed")
+parser.add_argument("--min-mileage", type=int, default=50000, help="Minimum mileage of the car")
+parser.add_argument("--max-mileage", type=int, default=200000, help="Maximum mileage of the car")
+parser.add_argument("--min-year", type=int, default=2000, help="Earliest year of the car model")
+parser.add_argument("--max-year", type=int, default=2020, help="Latest year of the car model")
+parser.add_argument("--transmission", type=str, default="automatic", help="Transmission type of the car")
+parser.add_argument("--search", type=str, default="HondaCivic", help="Search")
 
-parser.add_argument("--scroll-count", type=int, default=10, help="Scroll count")
+parser.add_argument("--scroll-count", type=int, default=4, help="Scroll count")
 parser.add_argument("--scroll-delay", type=int, default=2, help="Scroll delay")
 
 parser.add_argument("--headless", action="store_true", help="Browser config option")
@@ -34,13 +37,17 @@ args = parser.parse_args()
 base_url = args.base_url
 
 # Set up search parameters
-name = args.name
 min_price = args.min_price
 max_price = args.max_price
 days_listed = args.days_listed
-
+min_mileage = args.min_mileage
+max_mileage = args.max_mileage
+min_year = args.min_year
+max_year = args.max_year
+transmission = args.transmission
+search = args.search
 #Set up full url
-url = f"{base_url}minPrice={min_price}&maxPrice={max_price}&daysSinceListed={days_listed}&query={name}&exact=false"
+url = f"{base_url}minPrice={min_price}&maxPrice={max_price}&daysSinceListed={days_listed}&maxMileage={max_mileage}&maxYear={max_year}&minMileage={min_mileage}&minYear={min_year}&transmissionType={transmission}&query={search}&exact=false"
 
 # Define the number of times to scroll the page
 scroll_count = args.scroll_count
@@ -57,7 +64,10 @@ mobile_user_agent = (
 config = Config(user_agent=mobile_user_agent, incognito=True, headless=args.headless)
 
 
-repo_path = "C:\\Users\\thepo\\Desktop\\marketplace"
+#repo_path = "/home/daniel/git/marketplace"
+#repo_url = "https://github.com/daniel-campa/marketplace.git"
+
+repo_path = "/Users/thepo/Desktop/marketplace"
 repo_url = "https://github.com/jpoach/marketplace.git"
 
 content_path = os.path.join(repo_path, "docs/index.html")
@@ -100,57 +110,42 @@ while True:
 
         for item in listings:
             item_link = item.attrs['href']
-            # image_link = item.findChild('img').attrs['src']
+            image_link = item.findChild('img').attrs['src']
             item_data_div = item.findChild('div', class_='x9f619 x78zum5 xdt5ytf x1qughib x1rdy4ex xz9dl7a xsag5q8 xh8yej3 xp0eagm x1nrcals')
 
-            text_data = [item_data.text for item_data in item_data_div.children]
+            price, name, location, mileage = [item_data.text for item_data in item_data_div.children]
 
-            try:
-                price = text_data[0].split('$')[1]
-            except IndexError:
-                price = text_data[0]
-            name = text_data[1]
-            location = text_data[2]
-
-            try:
-                city, state = location.split(', ')
-            except ValueError:
-                print(location)
-                city, state = location, location
-
-            if len(text_data) > 3:
-                extra = text_data[3:]
-            else:
-                extra = []
+            city, state = location.split(', ')
             
             item_dict = {
                 'name': name,
-                'price': price,
+                'price': price.split('$')[0],
+                'mileage': mileage,
                 'city': city,
                 'state': state,
-                'extra': extra,
-                'link': item_link
-                # 'image': image_link
+                'link': item_link,
+                'image': image_link
             }
 
             listings_df = pd.concat([listings_df, pd.DataFrame([item_dict])], ignore_index=True)
 
+        locale.setlocale(locale.LC_NUMERIC, '')
+       # listings_df.price = listings_df.price.map(atof)
+        # listings_df.price = listings_df.price.str.replace(',','').astype(int)
+        listings_df.mileage = listings_df.mileage.str.removesuffix('K miles').str.removesuffix('K miles · Dealership').astype(int) * 1000
+
         listings_df.link = 'https://www.facebook.com' + listings_df.link
         listings_df.link = listings_df.link.apply(lambda link: f'<a href="{link}" target="_blank">{link}</a>')
 
-        try:
-            listings_df.price = listings_df.price.str.replace(',','').astype(int)
+        listings_df.image = listings_df.image.apply(lambda img_link: f'<img src={img_link} alt="{img_link}" >')
 
-            out_df = listings_df.sort_values(['price'])
+        pd.set_option('display.max_colwidth', None)
 
-        except ValueError:
-            out_df = listings_df
-
-        # listings_df.image = listings_df.image.apply(lambda img_link: f'<img src={img_link} alt="{img_link}" >')
-        # out_df.drop(['image'], axis=1, inplace=True)
+        out_df = listings_df.sort_values(['price'])
+        out_df.drop(['image'], axis=1, inplace=True)
 
         print(
-            tabulate(out_df, headers='keys', tablefmt='psql', showindex=False, maxcolwidths=[60, 6, 17, 5, 10, 70])
+            tabulate(out_df, headers='keys', tablefmt='psql', showindex=False, maxcolwidths=[60, 6, 7, 17, 5, 70])
         )
 
         out_df.to_html(content_path, index=False, escape=False, classes=['table table-stripped'])
